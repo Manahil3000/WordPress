@@ -95,15 +95,15 @@ jobs:
             ${{ runner.os }}-node-
 
       - name: Run UI Tests (Cypress)
-        if: ${{ always() }}
         run: |
-          if [ -f tests/UI/cypress.config.js ]; then
+          if [ -d tests/UI ]; then
             cd tests/UI
-            npm ci
-            npx cypress install
-            chmod +x node_modules/.bin/cypress
-            npx cypress run
-          else
-            echo "No Cypress config found, skipping UI tests."
+            npm install
+            # Start PHP built-in server in background
+            php -S 127.0.0.1:8000 -t ../../ &
+            # Wait for server to be ready
+            npx wait-on http://127.0.0.1:8000
+            # Run Cypress tests
+            npx cypress run --config baseUrl=http://127.0.0.1:8000
           fi
 
