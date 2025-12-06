@@ -83,8 +83,8 @@ jobs:
 
       - name: Run UI Tests (Cypress)
         run: |
-          if [ -d tests/ui ]; then
-            cd tests/ui
+          if [ -d tests/UI ]; then
+            cd tests/UI
             npm install
             npx cypress run
           fi
