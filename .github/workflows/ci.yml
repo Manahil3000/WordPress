@@ -11,6 +11,7 @@ jobs:
   # Continuous Integration (CI)
   # ----------------------------
   build-and-test:
+  
     name: Build & Test WordPress
     runs-on: ubuntu-latest
 
@@ -102,7 +103,7 @@ jobs:
             npm ci
             npx cypress install
             chmod +x node_modules/.bin/cypress
-            npx cypress run
+            npx cypress open
           else
             echo "No Cypress config found, skipping UI tests."
           fi
