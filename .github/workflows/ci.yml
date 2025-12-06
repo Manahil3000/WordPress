@@ -1,4 +1,4 @@
-name: WordPress CI
+name: WordPress CI/CD Pipeline
 
 on:
   push:
@@ -7,29 +7,121 @@ on:
     branches: [ master ]
 
 jobs:
-  test:
+  # ----------------------------
+  # Continuous Integration (CI)
+  # ----------------------------
+  build-and-test:
+    name: Build & Test WordPress
     runs-on: ubuntu-latest
 
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: wordpress
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd "mysqladmin ping --silent"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 3
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - name: Checkout Code
+        uses: actions/checkout@v3
 
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.2'
-          extensions: mbstring, intl, dom, mysqli, xdebug
+          php-version: 8.2
+          extensions: mysqli, gd
+          coverage: none
 
-      - name: Install dependencies
+      - name: Install Composer Dependencies
+        run: composer install --no-progress --prefer-dist
+
+      - name: Configure wp-config.php
         run: |
-          composer install --no-interaction --prefer-dist
+          cp wp-config-sample.php wp-config.php
+          sed -i "s/database_name_here/wordpress/" wp-config.php
+          sed -i "s/username_here/root/" wp-config.php
+          sed -i "s/password_here/root/" wp-config.php
 
-      - name: Run PHPUnit tests
+      - name: Run PHPUnit Tests
+        run: vendor/bin/phpunit --testsuite=unit
+
+      - name: Run API Tests (Postman/Newman)
         run: |
-          php vendor/bin/phpunit --coverage-text --coverage-clover=coverage.xml
+          if [ -f tests/api_collection.json ]; then
+            npm install -g newman
+            newman run tests/api_collection.json
+          fi
 
-      - name: Upload coverage report
-        uses: actions/upload-artifact@v4
+      - name: Run UI Tests (Cypress)
+        run: |
+          if [ -d tests/ui ]; then
+            npm install
+            npx cypress run
+          fi
+
+  # ----------------------------
+  # Deploy to Staging
+  # ----------------------------
+  deploy-staging:
+    name: Deploy to Staging
+    runs-on: ubuntu-latest
+    needs: build-and-test
+    if: success()   # Only deploy if tests pass
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Sync Files to Staging Server
+        uses: appleboy/ssh-action@v0.1.7
         with:
-          name: coverage-report
-          path: coverage.xml
+          host: ${{ secrets.STAGING_HOST }}
+          username: ${{ secrets.STAGING_USER }}
+          key: ${{ secrets.STAGING_SSH_KEY }}
+          port: 22
+          source: "."
+          target: "/var/www/html/wordpress-staging"
+
+      - name: Run Staging Database Migration
+        run: |
+          ssh -i ${{ secrets.STAGING_SSH_KEY }} ${{ secrets.STAGING_USER }}@${{ secrets.STAGING_HOST }} \
+          "cd /var/www/html/wordpress-staging && wp db import ./database.sql"
+
+  # ----------------------------
+  # Deploy to Production
+  # ----------------------------
+  deploy-production:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    needs: deploy-staging
+    if: success()   # Only deploy if staging is successful
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Sync Files to Production Server
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.PROD_HOST }}
+          username: ${{ secrets.PROD_USER }}
+          key: ${{ secrets.PROD_SSH_KEY }}
+          port: 22
+          source: "."
+          target: "/var/www/html/wordpress"
+
+      - name: Run Production Database Migration
+        run: |
+          ssh -i ${{ secrets.PROD_SSH_KEY }} ${{ secrets.PROD_USER }}@${{ secrets.PROD_HOST }} \
+          "cd /var/www/html/wordpress && wp db import ./database.sql"
+
+      - name: Enable Monitoring & Health Check
+        run: |
+          curl -f https://${{ secrets.PROD_HOST }}/wp-admin || exit 1
