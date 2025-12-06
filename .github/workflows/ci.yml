@@ -77,7 +77,7 @@ jobs:
           
       - name: Run API Tests (Postman/Newman)
         run: |
-          if [ -d tests/Api ]; then
+          if [ -d tests/Api/api-tests ]; then
             python -m pytest -q tests/Api/api-tests/
           fi
 
