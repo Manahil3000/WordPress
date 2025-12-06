@@ -1,0 +1,88 @@
+ bbbbbbbPHPUnit 11.5.45 by Sebastian Bergmann and contributors.
+
+Runtime:       PHP 8.2.12
+Configuration: C:\xampp\htdocs\WordPress\phpunit.xml
+
+F.............W..........FFF..W.S..F.............F.FF..F.....     61 / 61 (100%)
+
+Time: 00:04.860, Memory: 46.00 MB
+
+There were 6 PHPUnit test runner warnings:
+
+1) Class PluginTest cannot be found in C:\xampp\htdocs\WordPress\tests\Integration\PluginTest.php
+
+2) Class dataBaseTest cannot be found in C:\xampp\htdocs\WordPress\tests\Integration\dataBaseTest.php
+
+3) Class mediaTest cannot be found in C:\xampp\htdocs\WordPress\tests\Integration\mediaTest.php
+
+4) Class FormattingTest cannot be found in C:\xampp\htdocs\WordPress\tests\Unit\FormattingTest.php
+
+5) Class SecurityTest cannot be found in C:\xampp\htdocs\WordPress\tests\Unit\SecurityTest.php
+
+6) No filter is configured, code coverage will not be processed
+
+--
+
+There were 9 failures:
+
+1) CommentTest::testCheckCommentWithManualModerationDisabled
+check_comment() should return true when manual moderation is disabled
+Failed asserting that false is true.
+
+C:\xampp\htdocs\WordPress\tests\Integration\commentTest.php:144
+
+2) CommentTest::testWpDeleteComment
+wp_delete_comment() should return WP_Comment object on success
+Failed asserting that a boolean is an instance of class WP_Comment.
+
+C:\xampp\htdocs\WordPress\tests\Integration\commentTest.php:835
+
+3) CommentTest::testWpTrashUntrashComment
+wp_trash_comment() should return WP_Comment object
+Failed asserting that a boolean is an instance of class WP_Comment.
+
+C:\xampp\htdocs\WordPress\tests\Integration\commentTest.php:883
+
+4) CommentTest::testWpSpamUnspamComment
+wp_spam_comment() should return WP_Comment object
+Failed asserting that a boolean is an instance of class WP_Comment.
+
+C:\xampp\htdocs\WordPress\tests\Integration\commentTest.php:915
+
+5) PostTest::testPostTypeProperties
+Post type post should have capabilities
+Failed asserting that a NULL is not empty.
+
+C:\xampp\htdocs\WordPress\tests\Integration\postTest.php:150
+
+6) PostTest::testWpCountPosts
+Publish count should be integer
+Failed asserting that '3' is of type int.
+
+C:\xampp\htdocs\WordPress\tests\Integration\postTest.php:513
+
+7) PostTest::testSanitizePost
+Display context should sanitize HTML
+Failed asserting that '<script>alert("xss")</script>Title' is equal to '<script>alert("xss")</script>Title'.
+
+C:\xampp\htdocs\WordPress\tests\Integration\postTest.php:571
+
+8) PostTest::testPostTrashUntrash
+Post should be trashed
+Failed asserting that two strings are equal.
+--- Expected
++++ Actual
+@@ @@
+-'trash'
++'publish'
+
+C:\xampp\htdocs\WordPress\tests\Integration\postTest.php:603
+
+9) PostTest::testPostThumbnailManagement
+set_post_thumbnail() should return true on success
+Failed asserting that false is true.
+
+C:\xampp\htdocs\WordPress\tests\Integration\postTest.php:681
+
+FAILURES!
+Tests: 61, Assertions: 221, Failures: 9, PHPUnit Warnings: 6, Warnings: 10, PHPUnit Deprecations: 6, Skipped: 1.

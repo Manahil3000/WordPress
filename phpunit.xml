@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/11.3/phpunit.xsd"
+    bootstrap="wp-load.php"
+    colors="true"
+    cacheDirectory=".phpunit.cache">
+    
+    <testsuites>
+        <testsuite name="Unit">
+            <directory>tests/Unit</directory>
+        </testsuite>
+        <testsuite name="Integration">
+            <directory>tests/Integration</directory>
+        </testsuite>
+    </testsuites>
+    
+    <coverage 
+        cacheDirectory=".phpunit.cache/code-coverage"
+        pathCoverage="false">
+        <report>
+            <html outputDirectory="coverage-report" lowUpperBound="50" highLowerBound="90"/>
+        </report>
+        <include>
+            <directory suffix=".php">wp-includes</directory>
+            <directory suffix=".php">wp-admin</directory>
+        </include>
+    </coverage>
+</phpunit>

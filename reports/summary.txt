@@ -1,0 +1,1 @@
+Tests: 60&echo.Passed: 51&echo.Failed: 9&echo.Coverage: 87%
