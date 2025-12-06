@@ -81,6 +81,19 @@ jobs:
             python -m pytest -q tests/Api/api-tests/
           fi
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      - name: Cache Node Modules
+        uses: actions/cache@v3
+        with:
+          path: tests/UI/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('tests/UI/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
       - name: Run UI Tests (Cypress)
         run: |
           if [ -d tests/UI ]; then
