@@ -65,11 +65,20 @@ jobs:
       - name: Run PHPUnit Tests
         run: php ./vendor/bin/phpunit --bootstrap wp-load.php tests
 
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.13
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest requests
+          
       - name: Run API Tests (Postman/Newman)
         run: |
-          if [ -f tests/api_collection.json ]; then
-            npm install -g newman
-            newman run tests/api_collection.json
+          if [ -d tests/Api ]; then
+            python -m pytest -q tests/Api
           fi
 
       - name: Run UI Tests (Cypress)
