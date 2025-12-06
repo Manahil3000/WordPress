@@ -100,8 +100,9 @@ jobs:
           username: ${{ secrets.STAGING_USER }}
           key: ${{ secrets.STAGING_SSH_KEY }}
           port: 22
-          source: "."
-          target: "/var/www/html/wordpress-staging"
+          script: |
+            rsync -avz --delete ./ ${{ secrets.STAGING_USER }}@${{ secrets.STAGING_HOST }}:/var/www/html/wordpress-staging/
+            ssh ${{ secrets.STAGING_USER }}@${{ secrets.STAGING_HOST }} "cd /var/www/html/wordpress-staging && wp db import ./database.sql"
 
       - name: Run Staging Database Migration
         run: |
@@ -128,8 +129,9 @@ jobs:
           username: ${{ secrets.PROD_USER }}
           key: ${{ secrets.PROD_SSH_KEY }}
           port: 22
-          source: "."
-          target: "/var/www/html/wordpress"
+          script: |
+            rsync -avz --delete ./ ${{ secrets.STAGING_USER }}@${{ secrets.STAGING_HOST }}:/var/www/html/wordpress-staging/
+            ssh ${{ secrets.STAGING_USER }}@${{ secrets.STAGING_HOST }} "cd /var/www/html/wordpress-staging && wp db import ./database.sql"
 
       - name: Run Production Database Migration
         run: |
