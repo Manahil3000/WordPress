@@ -78,7 +78,7 @@ jobs:
       - name: Run API Tests (Postman/Newman)
         run: |
           if [ -d tests/Api ]; then
-            python -m pytest -q tests/Api
+            python -m pytest -q tests/Api/api-tests/
           fi
 
       - name: Run UI Tests (Cypress)
