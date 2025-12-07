@@ -95,7 +95,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-            - name: Start PHP server
+      - name: Start PHP server
         run: |
           php -S 127.0.0.1:8000 -t . &
           echo $! > php.pid
