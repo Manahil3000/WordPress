@@ -24,5 +24,5 @@ RUN chmod -R 755 /var/www/html/
 # Expose port 8080 (Railway standard)
 EXPOSE 8080
 
-# Start Apache
-CMD ["apache2-foreground"]
+# Run the script to adjust port & start Apache
+CMD ["/start.sh"]
