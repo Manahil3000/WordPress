@@ -95,16 +95,22 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      - name: Run UI Tests (Cypress)
-        if: ${{ always() }}
+            - name: Start PHP server
         run: |
-          if [ -f tests/UI/cypress.config.js ]; then
-            cd tests/UI
-            npm ci
-            npx cypress install
-            chmod +x node_modules/.bin/cypress
-            npx cypress run --headless
-          else
-            echo "No Cypress config found, skipping UI tests."
-          fi
+          php -S 127.0.0.1:8000 -t . &
+          echo $! > php.pid
+          sleep 5  # wait for server to start
+
+      - name: Run UI Tests (Cypress)
+        run: |
+          cd tests/UI
+          npm ci
+          npx cypress install
+          npx cypress run --headless
+
+      - name: Stop PHP server
+        if: always()
+        run: |
+          kill $(cat php.pid)
+
 
