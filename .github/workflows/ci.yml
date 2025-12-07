@@ -103,7 +103,7 @@ jobs:
             npm ci
             npx cypress install
             chmod +x node_modules/.bin/cypress
-            npx cypress open
+            npx cypress run --headless
           else
             echo "No Cypress config found, skipping UI tests."
           fi
