@@ -26,6 +26,7 @@ define('DB_PASSWORD', getenv('RAILWAY_DB_PASSWORD'));
 define('DB_HOST', getenv('RAILWAY_DB_HOST') . ':' . getenv('RAILWAY_DB_PORT'));
 define('DB_CHARSET', 'utf8');
 define('DB_COLLATE', '');
+define('SENTRY_DSN', getenv('SENTRY_DSN'));
 
 /**#@+
  * Authentication unique keys and salts.
