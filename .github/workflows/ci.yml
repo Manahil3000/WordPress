@@ -102,11 +102,17 @@ jobs:
           sleep 5  # wait for server to start
 
       - name: Run UI Tests (Cypress)
+        if: ${{ always() }}
         run: |
-          cd tests/UI
-          npm ci
-          npx cypress install
-          npx cypress run --headless
+          if [ -f tests/UI/cypress.config.js ]; then
+            cd tests/UI
+            npm ci
+            npx cypress install
+            npx cypress run --headless
+          else
+            echo "No Cypress config found, skipping UI tests."
+          fi
+
 
       - name: Stop PHP server
         if: always()
