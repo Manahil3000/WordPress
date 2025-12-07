@@ -20,10 +20,10 @@
 
 // ** Database settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */
-define('DB_NAME', getenv('RAILWAY_DB_NAME'));
-define('DB_USER', getenv('RAILWAY_DB_USER'));
-define('DB_PASSWORD', getenv('RAILWAY_DB_PASSWORD'));
-define('DB_HOST', getenv('RAILWAY_DB_HOST'));// . ':' . getenv('RAILWAY_DB_PORT'));
+define('DB_NAME', getenv('MYSQLDATABASE') ?: 'railway');
+define('DB_USER', getenv('MYSQLUSER') ?: 'root');
+define('DB_PASSWORD', getenv('MYSQLPASSWORD') ?: '');
+define('DB_HOST', getenv('MYSQLHOST') . ':' . (getenv('MYSQLPORT') ?: '3306'));
 define('DB_CHARSET', 'utf8');
 define('DB_COLLATE', '');
 define('SENTRY_DSN', getenv('SENTRY_DSN'));
