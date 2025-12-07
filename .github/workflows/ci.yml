@@ -51,6 +51,10 @@ jobs:
           php-version: 8.2
           extensions: mysqli, gd
 
+      - name: Check PHP mysqli extension
+        run: |
+          php -m | grep mysqli || (echo "mysqli not enabled!" && exit 1)
+
       - name: Install Composer Dependencies
         run: composer install --no-progress --prefer-dist
 
