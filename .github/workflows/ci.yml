@@ -36,6 +36,14 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
+      
+      - name: Verify Sentry DSN
+        run: |
+          if [ -z "${{ secrets.SENTRY_DSN }}" ]; then
+            echo "SENTRY_DSN not set!"
+            exit 1
+          fi
+
 
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
@@ -151,3 +159,4 @@ jobs:
         run: |
           echo "Production deployment handled via Railway."
           echo "Production URL: ${{ secrets.RAILWAY_SITE_URL }}"
+

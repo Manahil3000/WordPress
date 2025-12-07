@@ -3,7 +3,7 @@
         'name' => '__root__',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => '6881c70c0cb4f9f36567b6421b7c18f9f211b473',
+        'reference' => '1dfd4ebc7e687eef005c50f00e10631f8332596d',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         '__root__' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => '6881c70c0cb4f9f36567b6421b7c18f9f211b473',
+            'reference' => '1dfd4ebc7e687eef005c50f00e10631f8332596d',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -309,6 +309,15 @@
             'install_path' => __DIR__ . '/../sebastian/version',
             'aliases' => array(),
             'dev_requirement' => true,
+        ),
+        'sentry/sdk' => array(
+            'pretty_version' => '4.0.0',
+            'version' => '4.0.0.0',
+            'reference' => 'fcbca864e8d1dc712f3ecfaa95ea89d024fb2e53',
+            'type' => 'metapackage',
+            'install_path' => null,
+            'aliases' => array(),
+            'dev_requirement' => false,
         ),
         'sentry/sentry' => array(
             'pretty_version' => '4.19.1',
