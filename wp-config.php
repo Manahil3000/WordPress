@@ -23,7 +23,7 @@
 define('DB_NAME', getenv('RAILWAY_DB_NAME'));
 define('DB_USER', getenv('RAILWAY_DB_USER'));
 define('DB_PASSWORD', getenv('RAILWAY_DB_PASSWORD'));
-define('DB_HOST', getenv('RAILWAY_DB_HOST') . ':' . getenv('RAILWAY_DB_PORT'));
+define('DB_HOST', getenv('RAILWAY_DB_HOST');// . ':' . getenv('RAILWAY_DB_PORT'));
 define('DB_CHARSET', 'utf8');
 define('DB_COLLATE', '');
 define('SENTRY_DSN', getenv('SENTRY_DSN'));
