@@ -1,0 +1,10 @@
+.git
+.gitignore
+README.md
+Dockerfile
+railway.json
+composer.lock
+vendor/
+node_modules/
+*.log
+*.tmp
