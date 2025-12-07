@@ -17,6 +17,10 @@ RUN a2enmod rewrite
 # Copy your WordPress files
 COPY . /var/www/html/
 
+# Copy startup script to container root
+COPY start.sh /start.sh
+RUN chmod +x /start.sh
+
 # Set proper permissions
 RUN chown -R www-data:www-data /var/www/html/
 RUN chmod -R 755 /var/www/html/
@@ -26,3 +30,4 @@ EXPOSE 8080
 
 # Run the script to adjust port & start Apache
 CMD ["/start.sh"]
+
